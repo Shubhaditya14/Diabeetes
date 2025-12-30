@@ -18,7 +18,7 @@ def load_latest_model():
         return model
 
     print("Connecting to Comet...")
-    api = API(api_key="pIuJsYSAD5iYthJbUtX922e1w")
+    api = API(api_key="API_KEY")
 
     print("Fetching experiments...")
     experiments = api.get_experiments(
@@ -41,3 +41,4 @@ def load_latest_model():
 
     print("Model loaded successfully")
     return model
+
