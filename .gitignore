@@ -1,0 +1,78 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# ML models and data
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.parquet
+*.csv
+*.xlsx
+
+# Docker
+.docker/
+
+# Environment
+.env
+.env.local
+*.local
+
+# PID files
+*.pid
+
+# Credentials
+credentials.md
+*.pem
+*.key
+
+# Documentation
+*.pdf
+*.png
+*.jpg
+*.docx
+
+# Claude AI
+claude.md
+.claude/
+
+# Generated files
+standalone_admin_password.txt
+drift_report.html

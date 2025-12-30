@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+joblib
+imbalanced-learn
+comet-ml
+evidently
+metaflow
+requests

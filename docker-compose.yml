@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - COMET_API_KEY=${COMET_API_KEY}
+      - AIRFLOW_API_USER=admin
+      - AIRFLOW_API_PASSWORD=admin
+
+  airflow:
+    build: ./airflow
+    ports:
+      - "8080:8080"
+    environment:
+      - COMET_API_KEY=${COMET_API_KEY}
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth
+    volumes:
+      - ./:/opt/airflow:rw
+    command: standalone
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - REACT_APP_BACKEND_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8000
+    depends_on:
+      - backend
+  generator:
+    build:
+      context: ./generator
+      dockerfile: Dockerfile
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - GEN_INTERVAL=1.0
+    depends_on:
+      - backend
+    volumes:
+      - ./generator:/app:rw
+  monitor:
+    build:
+      context: ./monitor
+      dockerfile: Dockerfile
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - MONITOR_INTERVAL=10
+    depends_on:
+      - backend

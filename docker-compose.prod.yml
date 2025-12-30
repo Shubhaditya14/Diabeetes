@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  backend:
+    image: mlops-backend:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - COMET_API_KEY=${COMET_API_KEY}
+      - AIRFLOW_API_USER=${AIRFLOW_API_USER:-admin}
+      - AIRFLOW_API_PASSWORD=${AIRFLOW_API_PASSWORD:-admin}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  airflow:
+    image: mlops-airflow:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - COMET_API_KEY=${COMET_API_KEY}
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__API__AUTH_BACKEND=airflow.api.auth.backend.basic_auth
+    volumes:
+      - ./dags:/opt/airflow/dags:ro
+      - ./logs:/opt/airflow/logs
+    restart: unless-stopped
+
+  frontend:
+    image: mlops-frontend:latest
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL:-http://localhost:8000}
+    restart: unless-stopped
+
+  generator:
+    image: mlops-generator:latest
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - GEN_INTERVAL=${GEN_INTERVAL:-1.0}
+    restart: unless-stopped
+
+  monitor:
+    image: mlops-monitor:latest
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - MONITOR_INTERVAL=${MONITOR_INTERVAL:-10}
+    restart: unless-stopped
+
+networks:
+  default:
+    name: mlops-network
