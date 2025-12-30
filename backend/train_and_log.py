@@ -66,9 +66,9 @@ X_train, y_train = sm.fit_resample(X_train, y_train)
 def log_results_to_comet(model_name, model, X_test, y_test, **params):
     
     experiment = Experiment(
-        api_key="pIuJsYSAD5iYthJbUtX922e1w",  
+        api_key="",  
         project_name="diabetes-prediction",
-        workspace="shrxyxs",
+        workspace="",
         auto_output_logging="simple"
     )
 
@@ -175,4 +175,5 @@ log_results_to_comet(
     y_test,
     n_estimators=200,
     max_depth=10
+
 )
